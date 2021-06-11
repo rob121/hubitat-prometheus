@@ -32,3 +32,4 @@ hubprom_switch_state{device="kitchen_light"} 1
 # TYPE hubprom_temperature gauge
 hubprom_temperature{device="system_weather_driver"} 77
 ```
+git remote add origin git@github.com:rob121/hubitat-prometheus.git
