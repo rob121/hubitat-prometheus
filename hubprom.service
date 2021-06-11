@@ -1,0 +1,17 @@
+[Unit]
+Description=Hubitat Prometheus Collector
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+
+User=root
+WorkingDirectory=/root
+Type=simple
+PIDFile=/run/hubprom.pid
+ExecStart=/usr/local/bin/hubprom  
+ExecStop=/bin/kill -s QUIT $MAINPID
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
