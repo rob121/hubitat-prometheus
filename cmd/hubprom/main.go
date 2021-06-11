@@ -145,6 +145,7 @@ func convValue(val string) float64 {
 
 func toNice(nm string) string {
 
+	nm = strings.TrimSpace(nm)
 	ret := strings.Replace(nm, "-", "_", -1)
 	ret = strings.Replace(ret, " ", "_", -1)
 	ret = strings.ToLower(ret)
