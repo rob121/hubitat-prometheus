@@ -51,7 +51,7 @@ func (a *Api) url(req string) (string){
 
 	out :=  fmt.Sprintf("%s/%s?access_token=%s",a.base_url,req,a.access_token)
 
-    log.Println(out)
+    //log.Println(out)
 
 	return out
 

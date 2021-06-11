@@ -33,6 +33,12 @@ type Event struct{
 	DescriptionText string
 }
 
+func init(){
+
+	Events = make(chan Event)
+
+}
+
 func Config(addr string,enabled bool,dev map[string][]string){
     
      cfg = Cfg{Addr: addr,Enabled: enabled,Devices: dev}
@@ -42,10 +48,16 @@ func Config(addr string,enabled bool,dev map[string][]string){
         
         return
     }
+
+
+
+    for {
+
+    	 setupListener()
+
+	}
     
-    go setupListener()
-    
-    Events = make(chan Event)
+
     
 }
 
@@ -55,8 +67,7 @@ func setupListener(){
     
 	u := url.URL{Scheme: "ws", Host: cfg.Addr, Path: "/eventsocket"}
 	
-	log.Printf("connecting to %s", u.String())
-    
+	log.Printf("Connecting to %s", u.String())
 
     ctx,_ := context.WithCancel(context.Background())
     

@@ -1,14 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"github.com/rob121/hubprom/hubitat"
+	"github.com/rob121/vhelp"
 	"log"
 	"regexp"
 	"strconv"
 	"strings"
+	"fmt"
 	"time"
-	"github.com/rob121/vhelp"
 )
 
 var api *hubitat.Api
@@ -26,19 +26,24 @@ func main() {
 		log.Fatal(cerr)
 	}
 
-
-
 	devices := make(map[string][]string)
 
 	api =  hubitat.NewApi(conf.GetString("access_token"),conf.GetString("hubitat_base_url"),false)
 
+	go watchEvents()
+
 	go runPrometheus()
 
-	hubitat.Config(conf.GetString("hubitat_ip"), true, devices)
+	go hubitat.Config(conf.GetString("hubitat_ip"), true, devices)
 
 	go pollData()
 
-	go func() {
+
+	select {}
+
+}
+
+func watchEvents(){
 
 		for evt := range hubitat.Events {
 			fmt.Printf("%#v\n", evt)
@@ -81,9 +86,6 @@ func main() {
 
 		}
 
-	}()
-
-	select {}
 
 }
 
@@ -104,12 +106,12 @@ func pollData(){
 
 func pollAttributes(){
 
+
+
 		 devs, _ := api.Attributes("battery")
 
 		 for _, d := range devs {
-
 			 hubitat.Events <- hubitat.Event{Name:"battery",DisplayName:d.Label,Value:d.Attributes.Battery}
-
 		 }
 
 }
